@@ -4,8 +4,6 @@ namespace PetHouse.Models
 {
     public class Dog
     {
-        // change 
-
         public int Id { get; set; }
 
         [Required]
@@ -34,7 +32,7 @@ namespace PetHouse.Models
 
         [Required]
         [Range(1, 80)]
-        public double DogWight { get; set; }
+        public double DogWeight { get; set; }
 
         [Required]
         [StringLength(15, MinimumLength = 2)]
@@ -56,6 +54,11 @@ namespace PetHouse.Models
         [StringLength(150, MinimumLength = 2)]
         public string? DogHealthInformation { get; set; }
 
+        /*
+         * Potential values:
+         *    "NOT ADOPTED"
+         *    "ADOPTED"
+         */
         [Required]
         [StringLength(150, MinimumLength = 4)]
         public string? DogStatus { get; set; }
