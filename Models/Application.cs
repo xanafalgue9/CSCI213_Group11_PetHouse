@@ -17,7 +17,7 @@ namespace PetHouse.Models
 
         [Required]
         [StringLength(150, MinimumLength = 10)]
-        public string Message { get; set; }
+        public string? EvaluationMessage { get; set; }
 
         /*
          * Potential values:
