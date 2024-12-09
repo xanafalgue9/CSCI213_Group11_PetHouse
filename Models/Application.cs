@@ -21,11 +21,11 @@ namespace PetHouse.Models
 
         /*
          * Potential values:
-         *    "NOT EVALUATED"
-         *    "ACCEPTED"
-         *    "DECLINED"
+         *    0 = Not evaluated
+         *    1 = Accepted
+         *    -1 = Declined
          */
         [Required]
-        public string Status { get; set; }
+        public int Status { get; set; }
     }
 }
