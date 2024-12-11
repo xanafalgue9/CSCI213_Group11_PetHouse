@@ -7,10 +7,10 @@ namespace PetHouse.Models
         public int Id { get; set; }
 
         [Required]
-        public User Adopter { get; set; }
+        public User? Adopter { get; set; }
 
         [Required]
-        public Dog Pet { get; set; }
+        public Dog? Pet { get; set; }
 
         [Required]
         public DateOnly DateSubmission { get; set; }

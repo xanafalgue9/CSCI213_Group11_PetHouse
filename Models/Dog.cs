@@ -55,10 +55,6 @@ namespace PetHouse.Models
         public string? DogHealthInformation { get; set; }
 
         [Required]
-        [StringLength(150, MinimumLength = 4)]
-        public string? DogStatus { get; set; }
-
-        [Required]
         public bool IsAdopted { get; set; }
     }
 }
