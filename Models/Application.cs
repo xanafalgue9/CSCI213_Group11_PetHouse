@@ -16,7 +16,7 @@ namespace PetHouse.Models
         public DateOnly DateSubmission { get; set; }
 
         [Required]
-        public DateOnly? DateEvaluation { get; set; }
+        public DateOnly DateEvaluation { get; set; }
 
         [Required]
         [StringLength(150, MinimumLength = 10)]

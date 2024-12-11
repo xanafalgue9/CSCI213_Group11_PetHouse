@@ -54,13 +54,11 @@ namespace PetHouse.Models
         [StringLength(150, MinimumLength = 2)]
         public string? DogHealthInformation { get; set; }
 
-        /*
-         * Potential values:
-         *    "NOT ADOPTED"
-         *    "ADOPTED"
-         */
         [Required]
         [StringLength(150, MinimumLength = 4)]
         public string? DogStatus { get; set; }
+
+        [Required]
+        public bool IsAdopted { get; set; }
     }
 }
