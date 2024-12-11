@@ -16,6 +16,9 @@ namespace PetHouse.Models
         public DateOnly DateSubmission { get; set; }
 
         [Required]
+        public string? SubmissionMessage { get; set; }
+
+        [Required]
         public DateOnly DateEvaluation { get; set; }
 
         [Required]
