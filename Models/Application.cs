@@ -7,25 +7,31 @@ namespace PetHouse.Models
         public int Id { get; set; }
 
         [Required]
-        public User Adopter { get; set; }
+        public User? Adopter { get; set; }
 
         [Required]
-        public Dog Pet { get; set; }
+        public Dog? Pet { get; set; }
 
         [Required]
-        public DateOnly Date { get; set; }
+        public DateOnly DateSubmission { get; set; }
+
+        [Required]
+        public string? SubmissionMessage { get; set; }
+
+        [Required]
+        public DateOnly DateEvaluation { get; set; }
 
         [Required]
         [StringLength(150, MinimumLength = 10)]
-        public string Message { get; set; }
+        public string? EvaluationMessage { get; set; }
 
         /*
          * Potential values:
-         *    "NOT EVALUATED"
-         *    "ACCEPTED"
-         *    "DECLINED"
+         *    0 = Not evaluated
+         *    1 = Accepted
+         *    -1 = Declined
          */
         [Required]
-        public string Status { get; set; }
+        public int Status { get; set; }
     }
 }

@@ -24,8 +24,6 @@ namespace PetHouse.Models
             Large: 17–20 inches in height, and typically weigh 55–90 pounds
             Giant: Over 90 pounds in weight
         */
-
-
         [Required]
         [StringLength(8, MinimumLength = 4)]
         public string? DogSize { get; set; }
@@ -43,24 +41,23 @@ namespace PetHouse.Models
         public string? DogPersonality { get; set; }
 
         [Required]
-        [StringLength(5, MinimumLength = 2)]   // yes, no
-        public string? DogFriendlyWithChildren { get; set; }
+        public bool DogIsFriendlyWithChildren { get; set; }
 
         [Required]
-        [StringLength(5, MinimumLength = 2)]   // yes, no
-        public string? DogFriendlyWithCats { get; set; }
+        public bool DogIsFriendlyWithCats { get; set; }
 
         [Required]
         [StringLength(150, MinimumLength = 2)]
         public string? DogHealthInformation { get; set; }
 
-        /*
-         * Potential values:
-         *    "NOT ADOPTED"
-         *    "ADOPTED"
-         */
         [Required]
-        [StringLength(150, MinimumLength = 4)]
-        public string? DogStatus { get; set; }
+        public bool DogIsAdopted { get; set; }
+
+        // URL to picture file in wwwroot/DogPictures folder
+        [Required]
+        public string? DogPicture { get; set; }
+
+        [Required]
+        public User? Adopter { get; set; }
     }
 }
