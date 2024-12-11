@@ -13,7 +13,10 @@ namespace PetHouse.Models
         public Dog Pet { get; set; }
 
         [Required]
-        public DateOnly Date { get; set; }
+        public DateOnly DateSubmission { get; set; }
+
+        [Required]
+        public DateOnly? DateEvaluation { get; set; }
 
         [Required]
         [StringLength(150, MinimumLength = 10)]
