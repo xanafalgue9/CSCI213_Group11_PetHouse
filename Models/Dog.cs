@@ -52,5 +52,12 @@ namespace PetHouse.Models
 
         [Required]
         public bool DogIsAdopted { get; set; }
+
+        // URL to picture file in wwwroot/DogPictures folder
+        [Required]
+        public string? DogPicture { get; set; }
+
+        [Required]
+        public User? Adopter { get; set; }
     }
 }
