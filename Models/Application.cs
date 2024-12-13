@@ -6,22 +6,22 @@ namespace PetHouse.Models
     {
         public int Id { get; set; }
 
-        [Required]
+        // Not required because it will be automatically filled in
         public User? Adopter { get; set; }
 
-        [Required]
+        // Not required because it will be automatically filled in
         public Dog? Pet { get; set; }
 
-        [Required]
+        // Not required because it will be automatically filled in
         public DateOnly DateSubmission { get; set; }
 
         [Required]
+        [StringLength(150, MinimumLength = 10)]
         public string? SubmissionMessage { get; set; }
 
-        [Required]
+        // Not required because it will be automatically filled in
         public DateOnly DateEvaluation { get; set; }
 
-        [Required]
         [StringLength(150, MinimumLength = 10)]
         public string? EvaluationMessage { get; set; }
 
@@ -31,7 +31,7 @@ namespace PetHouse.Models
          *    1 = Accepted
          *    -1 = Declined
          */
-        [Required]
+        // Not required because it will be automatically filled in
         public int Status { get; set; }
     }
 }

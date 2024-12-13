@@ -50,14 +50,14 @@ namespace PetHouse.Models
         [StringLength(150, MinimumLength = 2)]
         public string? DogHealthInformation { get; set; }
 
-        [Required]
+        // Not required because it will be automatically filled in
         public bool DogIsAdopted { get; set; }
 
         // URL to picture file in wwwroot/DogPictures folder
-        [Required]
+        // Not required because it will be automatically filled in
         public string? DogPicture { get; set; }
 
-        [Required]
+        // Not required because it will be automatically filled in
         public User? Adopter { get; set; }
     }
 }

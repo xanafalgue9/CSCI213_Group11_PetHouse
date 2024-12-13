@@ -2,28 +2,29 @@
 
 namespace PetHouse.Models
 {
-    /*
-     * STOPGAP CLASS
-     */
     public class User
     {
         public int Id { get; set; }
        
-        //We might need this?
-        [Required]
-        [StringLength(50, MinimumLength = 10)]
-        [Phone]
-        public string? Phone { get; set; }
-
-        [Required]
-        [StringLength(50, MinimumLength = 10)]
-        [EmailAddress]
-        public string? Email { get; set; }
-
         [Required]
         [StringLength(30, MinimumLength = 4)]
         public string? Username { get; set; }
-
+      
+        /*
+         * Password requirements:
+         *     At least 8 characters
+         *     At most 30 characters
+         *     Contains a letter
+         *     Contains a number
+         *     Contains one of the following symbols:
+         *         ! @ # $ % ^ & * - _ + = : , . ?
+         */
+        [Required]
+        [StringLength(30, MinimumLength = 8)]
+        [RegularExpression(@"(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*\-_+=:,.?]).*",
+            ErrorMessage = "Password does not have all required elements.")]
+        public string? Password { get; set; }
+      
         [Required]
         [StringLength(24, MinimumLength = 3)]
         public string? FirstName { get; set; }
@@ -33,15 +34,34 @@ namespace PetHouse.Models
         public string? LastName { get; set; }
 
         [Required]
+        [StringLength(50, MinimumLength = 5)]
+        [EmailAddress]
+        public string? Email { get; set; }
+
+        [Required]
+        [StringLength(50, MinimumLength = 10)]
+        [Phone]
+        public string? Phone { get; set; }
+
+        [Required]
+        [Range(0, 100)]
+        public int Age { get; set; }
+
+        [Required]
         [StringLength(50, MinimumLength = 10)]
         public string? Location { get; set; }
 
         [Required]
-        [Range(0, 1000000)] //$0 - $1,000,000
+        [Range(0, 1000000)] // $0 - $1,000,000
         public double? AnnualIncome{ get; set; }
 
         [Required]
-        [Range(0,3)]   // 0-3 pets they already have
+        [Range(0,10)]   // 0-10 pets they already have
         public int? NumPreownedPets { get; set; }
+
+        // For use by admins when evaluating adoption applications
+        // Will be automatically updated when an application is accepted
+        // Will be reset at beginning of each year (NOT IMPLEMENTED)
+        public int NumDogsAdoptedThisCalendarYear { get; set; }
     }
 }
