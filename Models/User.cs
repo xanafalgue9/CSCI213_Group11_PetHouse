@@ -9,7 +9,7 @@ namespace PetHouse.Models
         [Required]
         [StringLength(30, MinimumLength = 4)]
         public string? Username { get; set; }
-
+      
         /*
          * Password requirements:
          *     At least 8 characters
@@ -24,7 +24,7 @@ namespace PetHouse.Models
         [RegularExpression(@"(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*\-_+=:,.?]).*",
             ErrorMessage = "Password does not have all required elements.")]
         public string? Password { get; set; }
-
+      
         [Required]
         [StringLength(24, MinimumLength = 3)]
         public string? FirstName { get; set; }
