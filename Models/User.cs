@@ -43,16 +43,5 @@ namespace PetHouse.Models
         [Required]
         [Range(0,3)]   // 0-3 pets they already have
         public int? NumPreownedPets { get; set; }
-
-        
-
-        /*
-         * Potential values:
-         *    "NOT ADOPTED"
-         *    "ADOPTED"
-         */
-        [Required]
-        [StringLength(150, MinimumLength = 4)]
-        public string? DogStatus { get; set; }
     }
 }
