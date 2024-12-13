@@ -58,5 +58,10 @@ namespace PetHouse.Models
         [Required]
         [Range(0,10)]   // 0-10 pets they already have
         public int? NumPreownedPets { get; set; }
+
+        // For use by admins when evaluating adoption applications
+        // Will be automatically updated when an application is accepted
+        // Will be reset at beginning of each year (NOT IMPLEMENTED)
+        public int NumDogsAdoptedThisCalendarYear { get; set; }
     }
 }
