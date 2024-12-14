@@ -1,0 +1,144 @@
+﻿@page "/dogs/edit"
+@using Microsoft.EntityFrameworkCore
+@using PetHouse.Models
+@inject IDbContextFactory<PetHouse.Data.PetHouseContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Edit</PageTitle>
+
+<h1>Edit</h1>
+
+<h2>Dog</h2>
+<hr />
+@if (Dog is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm method="post" Model="Dog" OnValidSubmit="UpdateDog" FormName="edit" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary role="alert"/>
+                <input type="hidden" name="Dog.Id" value="@Dog.Id" />
+                <div class="mb-3">
+                    <label for="dogname" class="form-label">DogName:</label>
+                    <InputText id="dogname" @bind-Value="Dog.DogName" class="form-control" aria-required="true"/>
+                    <ValidationMessage For="() => Dog.DogName" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="dogbreed" class="form-label">DogBreed:</label>
+                    <InputText id="dogbreed" @bind-Value="Dog.DogBreed" class="form-control" aria-required="true"/>
+                    <ValidationMessage For="() => Dog.DogBreed" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="dogage" class="form-label">DogAge:</label>
+                    <InputNumber id="dogage" @bind-Value="Dog.DogAge" class="form-control" aria-required="true"/>
+                    <ValidationMessage For="() => Dog.DogAge" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="dogsize" class="form-label">DogSize:</label>
+                    <InputText id="dogsize" @bind-Value="Dog.DogSize" class="form-control" aria-required="true"/>
+                    <ValidationMessage For="() => Dog.DogSize" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="dogweight" class="form-label">DogWeight:</label>
+                    <InputNumber id="dogweight" @bind-Value="Dog.DogWeight" class="form-control" aria-required="true"/>
+                    <ValidationMessage For="() => Dog.DogWeight" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="dogcolor" class="form-label">DogColor:</label>
+                    <InputText id="dogcolor" @bind-Value="Dog.DogColor" class="form-control" aria-required="true"/>
+                    <ValidationMessage For="() => Dog.DogColor" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="dogpersonality" class="form-label">DogPersonality:</label>
+                    <InputText id="dogpersonality" @bind-Value="Dog.DogPersonality" class="form-control" aria-required="true"/>
+                    <ValidationMessage For="() => Dog.DogPersonality" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="dogisfriendlywithchildren" class="form-label">DogIsFriendlyWithChildren:</label>
+                    <InputCheckbox id="dogisfriendlywithchildren" @bind-Value="Dog.DogIsFriendlyWithChildren" class="form-check-input" aria-required="true"/>
+                    <ValidationMessage For="() => Dog.DogIsFriendlyWithChildren" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="dogisfriendlywithcats" class="form-label">DogIsFriendlyWithCats:</label>
+                    <InputCheckbox id="dogisfriendlywithcats" @bind-Value="Dog.DogIsFriendlyWithCats" class="form-check-input" aria-required="true"/>
+                    <ValidationMessage For="() => Dog.DogIsFriendlyWithCats" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="doghealthinformation" class="form-label">DogHealthInformation:</label>
+                    <InputText id="doghealthinformation" @bind-Value="Dog.DogHealthInformation" class="form-control" aria-required="true"/>
+                    <ValidationMessage For="() => Dog.DogHealthInformation" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="dogisadopted" class="form-label">DogIsAdopted:</label>
+                    <InputCheckbox id="dogisadopted" @bind-Value="Dog.DogIsAdopted" class="form-check-input" />
+                    <ValidationMessage For="() => Dog.DogIsAdopted" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="dogpicture" class="form-label">DogPicture:</label>
+                    <InputText id="dogpicture" @bind-Value="Dog.DogPicture" class="form-control" />
+                    <ValidationMessage For="() => Dog.DogPicture" class="text-danger" />
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </EditForm>
+        </div>
+    </div>
+}
+
+<div>
+    <a href="/dogs">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    private int Id { get; set; }
+
+    [SupplyParameterFromForm]
+    private Dog? Dog { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        Dog ??= await context.Dog.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (Dog is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more information, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
+    private async Task UpdateDog()
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.Attach(Dog!).State = EntityState.Modified;
+
+        try
+        {
+            await context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!DogExists(Dog!.Id))
+            {
+                NavigationManager.NavigateTo("notfound");
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        NavigationManager.NavigateTo("/dogs");
+    }
+
+    private bool DogExists(int id)
+    {
+        using var context = DbFactory.CreateDbContext();
+        return context.Dog.Any(e => e.Id == id);
+    }
+}
