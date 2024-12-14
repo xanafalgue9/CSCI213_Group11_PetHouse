@@ -63,5 +63,8 @@ namespace PetHouse.Models
         // Will be automatically updated when an application is accepted
         // Will be reset at beginning of each year (NOT IMPLEMENTED)
         public int NumDogsAdoptedThisCalendarYear { get; set; }
+
+        // Determines whether user is a standard user or an admin
+        public bool UserIsAdmin { get; set; }
     }
 }
