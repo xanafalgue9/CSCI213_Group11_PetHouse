@@ -1,0 +1,54 @@
+﻿@page "/applications/details"
+@using Microsoft.EntityFrameworkCore
+@using PetHouse.Models
+@inject IDbContextFactory<PetHouse.Data.PetHouseContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h2>Application</h2>
+    <hr />
+    @if (application is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">DateSubmission</dt>
+            <dd class="col-sm-10">@application.DateSubmission</dd>
+            <dt class="col-sm-2">SubmissionMessage</dt>
+            <dd class="col-sm-10">@application.SubmissionMessage</dd>
+            <dt class="col-sm-2">DateEvaluation</dt>
+            <dd class="col-sm-10">@application.DateEvaluation</dd>
+            <dt class="col-sm-2">EvaluationMessage</dt>
+            <dd class="col-sm-10">@application.EvaluationMessage</dd>
+            <dt class="col-sm-2">Status</dt>
+            <dd class="col-sm-10">@application.Status</dd>
+        </dl>
+        <div>
+            <a href="@($"/applications/edit?id={application.Id}")">Edit</a> |
+            <a href="@($"/applications")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    private Application? application;
+
+    [SupplyParameterFromQuery]
+    private int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        application = await context.Application.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (application is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}

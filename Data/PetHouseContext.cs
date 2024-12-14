@@ -16,5 +16,6 @@ namespace PetHouse.Data
 
         public DbSet<PetHouse.Models.User> User { get; set; } = default!;
         public DbSet<PetHouse.Models.Dog> Dog { get; set; } = default!;
+        public DbSet<PetHouse.Models.Application> Application { get; set; } = default!;
     }
 }
