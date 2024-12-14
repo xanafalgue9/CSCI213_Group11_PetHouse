@@ -1,4 +1,4 @@
-﻿@page "/dogs"
+﻿@page "/listings"
 @using Microsoft.EntityFrameworkCore
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using PetHouse.Models
@@ -6,31 +6,29 @@
 @implements IAsyncDisposable
 @inject IDbContextFactory<PetHouse.Data.PetHouseContext> DbFactory
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Listings</PageTitle>
 
-<h1>Index</h1>
+<h1>Listings</h1>
 
 <p>
-    <a href="dogs/create">Create New</a>
+    <a href="/addlisting">Create New</a>
 </p>
 
-<QuickGrid Class="table" Items="context.Dog">
-    <PropertyColumn Property="dog => dog.DogName" />
-    <PropertyColumn Property="dog => dog.DogBreed" />
-    <PropertyColumn Property="dog => dog.DogAge" />
-    <PropertyColumn Property="dog => dog.DogSize" />
-    <PropertyColumn Property="dog => dog.DogWeight" />
-    <PropertyColumn Property="dog => dog.DogColor" />
-    <PropertyColumn Property="dog => dog.DogPersonality" />
-    <PropertyColumn Property="dog => dog.DogIsFriendlyWithChildren" />
-    <PropertyColumn Property="dog => dog.DogIsFriendlyWithCats" />
-    <PropertyColumn Property="dog => dog.DogHealthInformation" />
-    <PropertyColumn Property="dog => dog.DogIsAdopted" />
-    <PropertyColumn Property="dog => dog.DogPicture" />
+<QuickGrid Class="table align-middle" Items="context.Dog">
+    <TemplateColumn Context="dog" Class="col-2">
+        <div>
+            <img class="img-fluid" src="@dog.DogPicture" />
+        </div>
+    </TemplateColumn>
 
-    <TemplateColumn Context="dog">
+    <PropertyColumn Property="dog => dog.DogName" Title="Name"
+                    Class="col-3" Align="Align.Center" />
+    <PropertyColumn Property="dog => dog.DogBreed" Title="Breed"
+                    Class="col-3" Align="Align.Center" />
+
+    <TemplateColumn Context="dog" Class="col-3">
+        <a href="@($"dog?id={dog.Id}")">View</a> |
         <a href="@($"dogs/edit?id={dog.Id}")">Edit</a> |
-        <a href="@($"dogs/details?id={dog.Id}")">Details</a> |
         <a href="@($"dogs/delete?id={dog.Id}")">Delete</a>
     </TemplateColumn>
 </QuickGrid>

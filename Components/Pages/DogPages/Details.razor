@@ -1,59 +1,95 @@
-﻿@page "/dogs/details"
+﻿@page "/dog"
 @using Microsoft.EntityFrameworkCore
 @using PetHouse.Models
 @inject IDbContextFactory<PetHouse.Data.PetHouseContext> DbFactory
 @inject NavigationManager NavigationManager
 
-<PageTitle>Details</PageTitle>
+<PageTitle>Now Viewing: @NameOfDog</PageTitle>
 
-<h1>Details</h1>
-
-<div>
-    <h2>Dog</h2>
-    <hr />
+<div class="container float-start p-0">
     @if (dog is null)
     {
         <p><em>Loading...</em></p>
     }
-    else {
-        <dl class="row">
-            <dt class="col-sm-2">DogName</dt>
-            <dd class="col-sm-10">@dog.DogName</dd>
-            <dt class="col-sm-2">DogBreed</dt>
-            <dd class="col-sm-10">@dog.DogBreed</dd>
-            <dt class="col-sm-2">DogAge</dt>
-            <dd class="col-sm-10">@dog.DogAge</dd>
-            <dt class="col-sm-2">DogSize</dt>
-            <dd class="col-sm-10">@dog.DogSize</dd>
-            <dt class="col-sm-2">DogWeight</dt>
-            <dd class="col-sm-10">@dog.DogWeight</dd>
-            <dt class="col-sm-2">DogColor</dt>
-            <dd class="col-sm-10">@dog.DogColor</dd>
-            <dt class="col-sm-2">DogPersonality</dt>
-            <dd class="col-sm-10">@dog.DogPersonality</dd>
-            <dt class="col-sm-2">DogIsFriendlyWithChildren</dt>
-            <dd class="col-sm-10">@dog.DogIsFriendlyWithChildren</dd>
-            <dt class="col-sm-2">DogIsFriendlyWithCats</dt>
-            <dd class="col-sm-10">@dog.DogIsFriendlyWithCats</dd>
-            <dt class="col-sm-2">DogHealthInformation</dt>
-            <dd class="col-sm-10">@dog.DogHealthInformation</dd>
-            <dt class="col-sm-2">DogIsAdopted</dt>
-            <dd class="col-sm-10">@dog.DogIsAdopted</dd>
-            <dt class="col-sm-2">DogPicture</dt>
-            <dd class="col-sm-10">@dog.DogPicture</dd>
-        </dl>
-        <div>
-            <a href="@($"/dogs/edit?id={dog.Id}")">Edit</a> |
-            <a href="@($"/dogs")">Back to List</a>
+    else
+    {
+        <h2>@dog.DogName</h2>
+        <hr />
+
+        <div class="row">
+
+            <div class="col-sm-8 col-xxl-6">
+                <dl class="row">
+                    <dt class="col-sm-4">Name:</dt>
+                    <dd class="col-sm-8">@dog.DogName</dd>
+
+                    <dt class="col-sm-4">Breed:</dt>
+                    <dd class="col-sm-8">@dog.DogBreed</dd>
+
+                    <dt class="col-sm-4">Age:</dt>
+                    <dd class="col-sm-8">@dog.DogAge</dd>
+
+                    <dt class="col-sm-4">Size:</dt>
+                    <dd class="col-sm-8">@dog.DogSize</dd>
+
+                    <dt class="col-sm-4">Weight:</dt>
+                    <dd class="col-sm-8">@dog.DogWeight lbs</dd>
+
+                    <dt class="col-sm-4">Color:</dt>
+                    <dd class="col-sm-8">@dog.DogColor</dd>
+
+                    <dt class="col-sm-4">Personality:</dt>
+                    <dd class="col-sm-8">@dog.DogPersonality</dd>
+
+                    <dt class="col-sm-4">Health information:</dt>
+                    <dd class="col-sm-8">@dog.DogHealthInformation</dd>
+
+                    <dt class="col-sm-4">Friendly with children?</dt>
+                    <dd class="col-sm-8">@EvalCondition(dog.DogIsFriendlyWithChildren)</dd>
+
+                    <dt class="col-sm-4">Friendly with cats?</dt>
+                    <dd class="col-sm-8">@EvalCondition(dog.DogIsFriendlyWithCats)</dd>
+
+                    <dt class="col-sm-4">Adopted?</dt>
+                    <dd class="col-sm-8">@EvalCondition(dog.DogIsAdopted)</dd>
+
+                    <dt class="col-sm-4">Adopter:</dt>
+                    <dd class="col-sm-8">
+                        @if (dog.DogIsAdopted && dog.Adopter != null)
+                        {
+                            string name = dog.Adopter.FirstName + dog.Adopter.LastName;
+                            <a href="/user?id=@dog.Adopter.Id">@name</a>
+                        }
+                        else
+                        {
+                            <text>N/A</text>
+                        }
+                    </dd>
+                </dl>
+            </div>
+
+            <div class="col-sm-4 col-xxl-3">
+                <figure class="container">
+                    <img src="@dog.DogPicture" class="img-fluid" />
+                </figure>
+            </div>
+
         </div>
     }
 </div>
 
 @code {
     private Dog? dog;
+    private string NameOfDog = "Dog";   // for use in PageTitle
 
-    [SupplyParameterFromQuery]
+    [SupplyParameterFromQuery(Name = "id")]
     private int Id { get; set; }
+
+    // Displays yes/no instead of true/false for bool properties
+    private string EvalCondition(bool cond)
+    {
+        return (cond ? "Yes" : "No");
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -63,6 +99,11 @@
         if (dog is null)
         {
             NavigationManager.NavigateTo("notfound");
+        }
+        else
+        {
+            // Update w/ DogName iff neither dog nor DogName are null
+            NameOfDog = dog.DogName ?? NameOfDog;
         }
     }
 }

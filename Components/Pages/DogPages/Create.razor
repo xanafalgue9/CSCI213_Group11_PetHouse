@@ -1,80 +1,170 @@
-﻿@page "/dogs/create"
+﻿@page "/addlisting"
 @using Microsoft.EntityFrameworkCore
 @using PetHouse.Models
 @inject IDbContextFactory<PetHouse.Data.PetHouseContext> DbFactory
 @inject NavigationManager NavigationManager
 
-<PageTitle>Create</PageTitle>
+<PageTitle>Add new listing</PageTitle>
 
-<h1>Create</h1>
+<h1>Add new listing</h1>
 
-<h2>Dog</h2>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <EditForm method="post" Model="Dog" OnValidSubmit="AddDog" FormName="create" Enhance>
             <DataAnnotationsValidator />
-            <ValidationSummary class="text-danger" role="alert"/>
+            <ValidationSummary class="text-danger" role="alert" />
+
+
             <div class="mb-3">
-                <label for="dogname" class="form-label">DogName:</label> 
-                <InputText id="dogname" @bind-Value="Dog.DogName" class="form-control" aria-required="true"/> 
-                <ValidationMessage For="() => Dog.DogName" class="text-danger" /> 
-            </div>        
+                <label for="dogname" class="form-label">Name:</label>
+                <InputText id="dogname" @bind-Value="Dog.DogName" class="form-control" aria-required="true" />
+                <ValidationMessage For="() => Dog.DogName" class="text-danger" />
+            </div>
+
+
             <div class="mb-3">
-                <label for="dogbreed" class="form-label">DogBreed:</label> 
-                <InputText id="dogbreed" @bind-Value="Dog.DogBreed" class="form-control" aria-required="true"/> 
-                <ValidationMessage For="() => Dog.DogBreed" class="text-danger" /> 
-            </div>        
+                <label for="dogbreed" class="form-label">Breed:</label>
+                <InputText id="dogbreed" @bind-Value="Dog.DogBreed" class="form-control" aria-required="true" />
+                <ValidationMessage For="() => Dog.DogBreed" class="text-danger" />
+            </div>
+
+
             <div class="mb-3">
-                <label for="dogage" class="form-label">DogAge:</label> 
-                <InputNumber id="dogage" @bind-Value="Dog.DogAge" class="form-control" aria-required="true"/> 
-                <ValidationMessage For="() => Dog.DogAge" class="text-danger" /> 
-            </div>        
+                <label for="dogage" class="form-label">Age:</label>
+                <InputNumber id="dogage" @bind-Value="Dog.DogAge" class="form-control" aria-required="true" />
+                <ValidationMessage For="() => Dog.DogAge" class="text-danger" />
+            </div>
+
+
             <div class="mb-3">
-                <label for="dogsize" class="form-label">DogSize:</label> 
-                <InputText id="dogsize" @bind-Value="Dog.DogSize" class="form-control" aria-required="true"/> 
-                <ValidationMessage For="() => Dog.DogSize" class="text-danger" /> 
-            </div>        
+                <label for="dogsize" class="form-label">Size:</label>
+                <InputRadioGroup @bind-Value="Dog.DogSize" id="dogsize" aria-required="true">
+                    <div class="form-check">
+                        <InputRadio Value='"Small"' class="form-check-input" id="dogsize-Small" />
+                        <label class="form-check-label" for="dogsize-Small">Small</label>
+                    </div>
+
+                    <div class="form-check">
+                        <InputRadio Value='"Medium"' class="form-check-input" id="dogsize-Medium" />
+                        <label class="form-check-label" for="dogsize-Medium">Medium</label>
+                    </div>
+
+                    <div class="form-check">
+                        <InputRadio Value='"Large"' class="form-check-input" id="dogsize-Large" />
+                        <label class="form-check-label" for="dogsize-Large">Large</label>
+                    </div>
+
+                    <div class="form-check">
+                        <InputRadio Value='"Giant"' class="form-check-input" id="dogsize-Giant" />
+                        <label class="form-check-label" for="dogsize-Giant">Giant</label>
+                    </div>
+                </InputRadioGroup>
+                <ValidationMessage For="() => Dog.DogSize" class="text-danger" />
+            </div>
+
+
             <div class="mb-3">
-                <label for="dogweight" class="form-label">DogWeight:</label> 
-                <InputNumber id="dogweight" @bind-Value="Dog.DogWeight" class="form-control" aria-required="true"/> 
-                <ValidationMessage For="() => Dog.DogWeight" class="text-danger" /> 
-            </div>        
+                <label for="dogweight" class="form-label">Weight (pounds):</label>
+                <InputNumber id="dogweight" @bind-Value="Dog.DogWeight" class="form-control" aria-required="true" />
+                <ValidationMessage For="() => Dog.DogWeight" class="text-danger" />
+            </div>
+
+
             <div class="mb-3">
-                <label for="dogcolor" class="form-label">DogColor:</label> 
-                <InputText id="dogcolor" @bind-Value="Dog.DogColor" class="form-control" aria-required="true"/> 
-                <ValidationMessage For="() => Dog.DogColor" class="text-danger" /> 
-            </div>        
+                <label for="dogcolor" class="form-label">Color:</label>
+                <InputRadioGroup @bind-Value="Dog.DogColor" id="dogcolor" aria-required="true">
+                    <div class="form-check">
+                        <InputRadio Value='"Black"' class="form-check-input" id="dogcolor-Black" />
+                        <label class="form-check-label" for="dogcolor-Black">Black</label>
+                    </div>
+
+                    <div class="form-check">
+                        <InputRadio Value='"Brown"' class="form-check-input" id="dogcolor-Brown" />
+                        <label class="form-check-label" for="dogcolor-Brown">Brown</label>
+                    </div>
+
+                    <div class="form-check">
+                        <InputRadio Value='"Cream"' class="form-check-input" id="dogcolor-Cream" />
+                        <label class="form-check-label" for="dogcolor-Cream">Cream</label>
+                    </div>
+
+                    <div class="form-check">
+                        <InputRadio Value='"Gold"' class="form-check-input" id="dogcolor-Gold" />
+                        <label class="form-check-label" for="dogcolor-Gold">Gold</label>
+                    </div>
+
+                    <div class="form-check">
+                        <InputRadio Value='"Gray"' class="form-check-input" id="dogcolor-Gray" />
+                        <label class="form-check-label" for="dogcolor-Gray">Gray</label>
+                    </div>
+
+                    <div class="form-check">
+                        <InputRadio Value='"Multicolor"' class="form-check-input" id="dogcolor-Multicolor" />
+                        <label class="form-check-label" for="dogcolor-Multicolor">Multicolor</label>
+                    </div>
+
+                    <div class="form-check">
+                        <InputRadio Value='"Red"' class="form-check-input" id="dogcolor-Red" />
+                        <label class="form-check-label" for="dogcolor-Red">Red</label>
+                    </div>
+
+                    <div class="form-check">
+                        <InputRadio Value='"White"' class="form-check-input" id="dogcolor-White" />
+                        <label class="form-check-label" for="dogcolor-White">White</label>
+                    </div>
+                </InputRadioGroup>
+                <ValidationMessage For="() => Dog.DogColor" class="text-danger" />
+            </div>
+
+
             <div class="mb-3">
-                <label for="dogpersonality" class="form-label">DogPersonality:</label> 
-                <InputText id="dogpersonality" @bind-Value="Dog.DogPersonality" class="form-control" aria-required="true"/> 
-                <ValidationMessage For="() => Dog.DogPersonality" class="text-danger" /> 
-            </div>        
+                <label for="dogpersonality" class="form-label">Personality:</label>
+                <InputText id="dogpersonality" @bind-Value="Dog.DogPersonality" class="form-control" aria-required="true" />
+                <ValidationMessage For="() => Dog.DogPersonality" class="text-danger" />
+            </div>
+
+
             <div class="mb-3">
-                <label for="dogisfriendlywithchildren" class="form-label">DogIsFriendlyWithChildren:</label> 
-                <InputCheckbox id="dogisfriendlywithchildren" @bind-Value="Dog.DogIsFriendlyWithChildren" class="form-check-input" aria-required="true"/> 
-                <ValidationMessage For="() => Dog.DogIsFriendlyWithChildren" class="text-danger" /> 
-            </div>        
+                <label for="friendlychildenradiogroup" class="form-label">Friendly with children?</label>
+                <InputRadioGroup @bind-Value="Dog.DogIsFriendlyWithChildren" id="friendlychildenradiogroup" aria-required="true">
+                    <div class="form-check">
+                        <InputRadio Value="true" class="form-check-input" id="friendlyWithChildren-Yes" />
+                        <label class="form-check-label" for="friendlyWithChildren-Yes">Yes</label>
+                    </div>
+
+                    <div class="form-check">
+                        <InputRadio Value="false" class="form-check-input" id="friendlyWithChildren-No" />
+                        <label class="form-check-label" for="friendlyWithChildren-No">No</label>
+                    </div>
+                </InputRadioGroup>
+                <ValidationMessage For="() => Dog.DogIsFriendlyWithChildren" class="text-danger" />
+            </div>
+
+
             <div class="mb-3">
-                <label for="dogisfriendlywithcats" class="form-label">DogIsFriendlyWithCats:</label> 
-                <InputCheckbox id="dogisfriendlywithcats" @bind-Value="Dog.DogIsFriendlyWithCats" class="form-check-input" aria-required="true"/> 
-                <ValidationMessage For="() => Dog.DogIsFriendlyWithCats" class="text-danger" /> 
-            </div>        
+                <label for="friendlycatsradiogroup" class="form-label">Friendly with cats?</label>
+                <InputRadioGroup @bind-Value="Dog.DogIsFriendlyWithCats" id="friendlycatsradiogroup" aria-required="true">
+                    <div class="form-check">
+                        <InputRadio Value="true" class="form-check-input" id="friendlyWithCats-Yes" />
+                        <label class="form-check-label" for="friendlyWithCats-Yes">Yes</label>
+                    </div>
+
+                    <div class="form-check">
+                        <InputRadio Value="false" class="form-check-input" id="friendlyWithCats-No" />
+                        <label class="form-check-label" for="friendlyWithCats-No">No</label>
+                    </div>
+                </InputRadioGroup>
+                <ValidationMessage For="() => Dog.DogIsFriendlyWithCats" class="text-danger" />
+            </div>
+
+
             <div class="mb-3">
-                <label for="doghealthinformation" class="form-label">DogHealthInformation:</label> 
-                <InputText id="doghealthinformation" @bind-Value="Dog.DogHealthInformation" class="form-control" aria-required="true"/> 
-                <ValidationMessage For="() => Dog.DogHealthInformation" class="text-danger" /> 
-            </div>        
-            <div class="mb-3">
-                <label for="dogisadopted" class="form-label">DogIsAdopted:</label> 
-                <InputCheckbox id="dogisadopted" @bind-Value="Dog.DogIsAdopted" class="form-check-input" /> 
-                <ValidationMessage For="() => Dog.DogIsAdopted" class="text-danger" /> 
-            </div>        
-            <div class="mb-3">
-                <label for="dogpicture" class="form-label">DogPicture:</label> 
-                <InputText id="dogpicture" @bind-Value="Dog.DogPicture" class="form-control" /> 
-                <ValidationMessage For="() => Dog.DogPicture" class="text-danger" /> 
-            </div>        
+                <label for="doghealthinformation" class="form-label">Health information:</label>
+                <InputText id="doghealthinformation" @bind-Value="Dog.DogHealthInformation" class="form-control" aria-required="true" />
+                <ValidationMessage For="() => Dog.DogHealthInformation" class="text-danger" />
+            </div>
+
             <button type="submit" class="btn btn-primary">Create</button>
         </EditForm>
     </div>
@@ -93,7 +183,18 @@
     {
         using var context = DbFactory.CreateDbContext();
         context.Dog.Add(Dog);
+
+        Dog.DogIsAdopted = false;
+        //Dog.DogPicture = $"/DogPictures/{Dog.Id}.jpg";
+        // NOTE: defaults to 0?
+        // TO-DO: FIX THIS!!!
+        Dog.Adopter = null;
+
         await context.SaveChangesAsync();
-        NavigationManager.NavigateTo("/dogs");
+
+        Dog.DogPicture = $"/DogPictures/{Dog.Id}.jpg";
+        await context.SaveChangesAsync();
+
+        NavigationManager.NavigateTo("/listings");
     }
 }
