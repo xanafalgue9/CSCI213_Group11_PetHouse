@@ -6,9 +6,7 @@
 
 <PageTitle>Edit</PageTitle>
 
-<h1>Edit</h1>
-
-<h2>Application</h2>
+<h2>Edit application</h2>
 <hr />
 @if (Application is null)
 {
@@ -21,32 +19,54 @@ else
             <EditForm method="post" Model="Application" OnValidSubmit="UpdateApplication" FormName="edit" Enhance>
                 <DataAnnotationsValidator />
                 <ValidationSummary role="alert"/>
+
                 <input type="hidden" name="Application.Id" value="@Application.Id" />
+
                 <div class="mb-3">
-                    <label for="datesubmission" class="form-label">DateSubmission:</label>
+                    <label for="datesubmission" class="form-label">Date submitted:</label>
                     <InputDate id="datesubmission" @bind-Value="Application.DateSubmission" class="form-control" />
                     <ValidationMessage For="() => Application.DateSubmission" class="text-danger" />
                 </div>
+
                 <div class="mb-3">
-                    <label for="submissionmessage" class="form-label">SubmissionMessage:</label>
+                    <label for="submissionmessage" class="form-label">Submission message:</label>
                     <InputText id="submissionmessage" @bind-Value="Application.SubmissionMessage" class="form-control" aria-required="true"/>
                     <ValidationMessage For="() => Application.SubmissionMessage" class="text-danger" />
                 </div>
+
                 <div class="mb-3">
-                    <label for="dateevaluation" class="form-label">DateEvaluation:</label>
+                    <label for="dateevaluation" class="form-label">Date evaluated:</label>
                     <InputDate id="dateevaluation" @bind-Value="Application.DateEvaluation" class="form-control" />
                     <ValidationMessage For="() => Application.DateEvaluation" class="text-danger" />
                 </div>
+
                 <div class="mb-3">
-                    <label for="evaluationmessage" class="form-label">EvaluationMessage:</label>
+                    <label for="evaluationmessage" class="form-label">Evaluation message:</label>
                     <InputText id="evaluationmessage" @bind-Value="Application.EvaluationMessage" class="form-control" />
                     <ValidationMessage For="() => Application.EvaluationMessage" class="text-danger" />
                 </div>
+
                 <div class="mb-3">
-                    <label for="status" class="form-label">Status:</label>
-                    <InputNumber id="status" @bind-Value="Application.Status" class="form-control" />
+                    <label for="statusradiogroup" class="form-label">Status:</label>
+                    <InputRadioGroup @bind-Value="Application.Status" id="statusradiogroup" aria-required="true">
+                        <div class="form-check">
+                            <InputRadio Value="0" class="form-check-input" id="status-Submitted" />
+                            <label class="form-check-label" for="status-Submitted">Submitted</label>
+                        </div>
+
+                        <div class="form-check">
+                            <InputRadio Value="1" class="form-check-input" id="status-Accepted" />
+                            <label class="form-check-label" for="status-Accepted">Accepted</label>
+                        </div>
+
+                        <div class="form-check">
+                            <InputRadio Value="-1" class="form-check-input" id="status-Declined" />
+                            <label class="form-check-label" for="status-Declined">Declined</label>
+                        </div>
+                    </InputRadioGroup>
                     <ValidationMessage For="() => Application.Status" class="text-danger" />
                 </div>
+
                 <button type="submit" class="btn btn-primary">Save</button>
             </EditForm>
         </div>
@@ -54,6 +74,7 @@ else
 }
 
 <div>
+    <br />
     <a href="/applications">Back to List</a>
 </div>
 

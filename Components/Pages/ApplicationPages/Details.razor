@@ -92,15 +92,60 @@
             </dd>
         </dl>
 
+        @if ( application.Status == 0 )     // only include evaluation form if application is unevaluated
+        {
+            <hr />
+            <EditForm method="post" Model="application" OnValidSubmit="EvaluateApplication"
+                      FormName="edit" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary class="text-danger" role="alert" />
+
+                <!-- If these weren't here, then they would automatically be reset to null/default vals -->
+                <!-- So they're included but are also hidden because we don't want them to be changed! -->
+                <div class="d-none">
+                    <input type="hidden" name="application.Id" value="@application.Id" />
+                    <InputDate id="datesubmission" @bind-Value="application.DateSubmission" class="form-control" />
+                    <ValidationMessage For="() => application.DateSubmission" class="text-danger" />
+                    <InputText id="submissionmessage" @bind-Value="application.SubmissionMessage" class="form-control" aria-required="true" />
+                    <ValidationMessage For="() => application.SubmissionMessage" class="text-danger" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="evalMessage" class="form-label">Evaluation message:</label> 
+                    <InputTextArea id="evalMessage" @bind-Value="application.EvaluationMessage"
+                                   class="form-control" aria-required="true" />
+                    <ValidationMessage For="() => application.EvaluationMessage" class="text-danger" />
+                </div>
+
+                <div class="mb-3">
+                    <InputRadioGroup @bind-Value="application.Status" aria-required="true">
+                        <div class="form-check">
+                            <InputRadio Value="1" class="form-check-input" id="status-Accepted" />
+                            <label class="form-check-label" for="status-Accepted">Accept</label>
+                        </div>
+
+                        <div class="form-check">
+                            <InputRadio Value="-1" class="form-check-input" id="status-Declined" />
+                            <label class="form-check-label" for="status-Declined">Decline</label>
+                        </div>
+                    </InputRadioGroup>
+                    <ValidationMessage For="() => application.Status" class="text-danger" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Finalize</button>
+            </EditForm>
+        }
+
         <div>
-            <a href="@($"/applications/edit?id={application.Id}")">Edit</a> |
+            <br />
             <a href="@($"/applications")">Back to List</a>
         </div>
     }
 </div>
 
 @code {
-    private Application? application;
+    [SupplyParameterFromForm]
+    private Application? application { get; set; }
 
     [SupplyParameterFromQuery]
     private int Id { get; set; }
@@ -108,11 +153,23 @@
     protected override async Task OnInitializedAsync()
     {
         using var context = DbFactory.CreateDbContext();
-        application = await context.Application.FirstOrDefaultAsync(m => m.Id == Id);
+        application ??= await context.Application.FirstOrDefaultAsync(m => m.Id == Id);
 
         if (application is null)
         {
             NavigationManager.NavigateTo("notfound");
         }
+    }
+
+    private async Task EvaluateApplication()
+    {
+        // Set date and time of evaluation to current date and time
+        application!.DateEvaluation = DateOnly.FromDateTime(DateTime.Now);
+
+        using var context = DbFactory.CreateDbContext();
+        context.Attach(application!).State = EntityState.Modified;
+        await context.SaveChangesAsync();
+
+        NavigationManager.NavigateTo("/applications");
     }
 }

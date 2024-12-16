@@ -72,7 +72,7 @@
         context.Application.Add(Application);
 
         Application.Adopter = null;
-        Application.Pet = Pet;
+        Application.Pet = Pet;      // Pet is not null, but property somehow ends up being null regardless
         Application.DateSubmission = DateOnly.FromDateTime(DateTime.Now);
         Application.DateEvaluation = DateOnly.MinValue;
         Application.EvaluationMessage = null;

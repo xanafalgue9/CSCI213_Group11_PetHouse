@@ -6,11 +6,8 @@
 
 <PageTitle>Delete</PageTitle>
 
-<h1>Delete</h1>
-
-<p>Are you sure you want to delete this?</p>
 <div>
-    <h2>Dog</h2>
+    <h2>Delete this listing?</h2>
     <hr />
     @if (dog is null)
     {
@@ -18,53 +15,80 @@
     }
     else {
         <dl class="row">
-            <dt class="col-sm-2">DogName</dt>
-            <dd class="col-sm-10">@dog.DogName</dd>
+            <dt class="col-sm-4">Name:</dt>
+            <dd class="col-sm-8">@dog.DogName</dd>
         </dl>
+
         <dl class="row">
-            <dt class="col-sm-2">DogBreed</dt>
-            <dd class="col-sm-10">@dog.DogBreed</dd>
+            <dt class="col-sm-4">Breed:</dt>
+            <dd class="col-sm-8">@dog.DogBreed</dd>
         </dl>
+
         <dl class="row">
-            <dt class="col-sm-2">DogAge</dt>
-            <dd class="col-sm-10">@dog.DogAge</dd>
+            <dt class="col-sm-4">Age:</dt>
+            <dd class="col-sm-8">@dog.DogAge</dd>
         </dl>
+
         <dl class="row">
-            <dt class="col-sm-2">DogSize</dt>
-            <dd class="col-sm-10">@dog.DogSize</dd>
+            <dt class="col-sm-4">Size:</dt>
+            <dd class="col-sm-8">@dog.DogSize</dd>
         </dl>
+
         <dl class="row">
-            <dt class="col-sm-2">DogWeight</dt>
-            <dd class="col-sm-10">@dog.DogWeight</dd>
+            <dt class="col-sm-4">Weight:</dt>
+            <dd class="col-sm-8">@dog.DogWeight lbs</dd>
         </dl>
+
         <dl class="row">
-            <dt class="col-sm-2">DogColor</dt>
-            <dd class="col-sm-10">@dog.DogColor</dd>
+            <dt class="col-sm-4">Color:</dt>
+            <dd class="col-sm-8">@dog.DogColor</dd>
         </dl>
+
         <dl class="row">
-            <dt class="col-sm-2">DogPersonality</dt>
-            <dd class="col-sm-10">@dog.DogPersonality</dd>
+            <dt class="col-sm-4">Personality:</dt>
+            <dd class="col-sm-8">@dog.DogPersonality</dd>
         </dl>
+
         <dl class="row">
-            <dt class="col-sm-2">DogIsFriendlyWithChildren</dt>
-            <dd class="col-sm-10">@dog.DogIsFriendlyWithChildren</dd>
+            <dt class="col-sm-4">Health information:</dt>
+            <dd class="col-sm-8">@dog.DogHealthInformation</dd>
         </dl>
+
         <dl class="row">
-            <dt class="col-sm-2">DogIsFriendlyWithCats</dt>
-            <dd class="col-sm-10">@dog.DogIsFriendlyWithCats</dd>
+            <dt class="col-sm-4">Friendly with children?</dt>
+            <dd class="col-sm-8">@EvalCondition(dog.DogIsFriendlyWithChildren)</dd>
         </dl>
+
         <dl class="row">
-            <dt class="col-sm-2">DogHealthInformation</dt>
-            <dd class="col-sm-10">@dog.DogHealthInformation</dd>
+            <dt class="col-sm-4">Friendly with cats?</dt>
+            <dd class="col-sm-8">@EvalCondition(dog.DogIsFriendlyWithCats)</dd>
         </dl>
+
         <dl class="row">
-            <dt class="col-sm-2">DogIsAdopted</dt>
-            <dd class="col-sm-10">@dog.DogIsAdopted</dd>
+            <dt class="col-sm-4">Adopted?</dt>
+            <dd class="col-sm-8">@EvalCondition(dog.DogIsAdopted)</dd>
         </dl>
+
         <dl class="row">
-            <dt class="col-sm-2">DogPicture</dt>
-            <dd class="col-sm-10">@dog.DogPicture</dd>
+            <dt class="col-sm-4">Picture URL:</dt>
+            <dd class="col-sm-8">@dog.DogPicture</dd>
         </dl>
+        
+        <dl class="row">
+            <dt class="col-sm-4">Adopter:</dt>
+            <dd class="col-sm-8">
+                @if (dog.DogIsAdopted && dog.Adopter != null)
+                {
+                    string name = dog.Adopter.FirstName + dog.Adopter.LastName;
+                    <a href="/user?id=@dog.Adopter.Id">@name</a>
+                }
+                else
+                {
+                    <text>N/A</text>
+                }
+            </dd>
+        </dl>
+
         <EditForm method="post" Model="dog" OnValidSubmit="DeleteDog" FormName="delete" Enhance>
             <button type="submit" class="btn btn-danger" disabled="@(dog is null)">Delete</button> |
             <a href="/listings">Back to List</a>
@@ -87,6 +111,12 @@
         {
             NavigationManager.NavigateTo("notfound");
         }
+    }
+
+    // Displays yes/no instead of true/false for bool properties
+    private string EvalCondition(bool cond)
+    {
+        return ( cond ? "Yes" : "No" );
     }
 
     private async Task DeleteDog()
