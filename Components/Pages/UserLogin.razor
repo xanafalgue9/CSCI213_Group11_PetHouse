@@ -1,12 +1,13 @@
 @page "/login"
 @using Microsoft.AspNetCore.Identity
 @using PetHouse.Models
+@inject NavigationManager NavigationManager
 
 <PageTitle>Log In</PageTitle>
 
 <h2>Log In</h2>
 <div>
-    <EditForm Model="loginModel" OnValidSubmit="Login">
+    <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
         <DataAnnotationsValidator />
         <ValidationSummary />
 
@@ -22,40 +23,49 @@
 
         <button type="submit" class="btn btn-primary">Sign In</button>
     </EditForm>
+
+    @if (loginFailed)
+    {
+        <div class="alert alert-danger mt-3">
+            Invalid login attempt. Please check your credentials and try again.
+        </div>
+    }
 </div>
 
 @code {
-
-    public User loginModel = new();
-
-    private async Task Login()
+    public class LoginModel
     {
+        public string Username { get; set; }
 
-        var result = await SignInManager.PasswordSignInAsync(
 
-            loginModel.Username,
-
-            loginModel.Password,
-
-            isPersistent: false,
-
-            lockoutOnFailure: false);
-
-        if (result.Succeeded)
-        {
-            // Redirect to another page (e.g., dashboard)
-            NavigationManager.NavigateTo("/dashboard");
-        }
-        else
-        {
-            // Display error message to the user
-            Console.WriteLine("Login failed. Please check your credentials.");
-        }
+        public string Password { get; set; }
     }
 
-    [Inject]
-    private SignInManager<IdentityUser> SignInManager { get; set; }
+    private LoginModel loginModel = new LoginModel();
+    private bool loginFailed = false;
 
-    [Inject]
-    private NavigationManager NavigationManager { get; set; }
+    
+    //TODO: IMPLEMENTATION (SignInManager Problems)
+    private async Task HandleLogin()
+    {
+/*
+         * var result = await SignInManager.PasswordSignInAsync(
+                    loginModel.Username,
+                    loginModel.Password,
+                    isPersistent: false,
+                    lockoutOnFailure: false
+                );
+
+                if (result.Succeeded)
+                {
+                    // Redirect user to dashboard or desired page
+                    NavigationManager.NavigateTo("/dog");
+                }
+                else
+                {
+                    // Set loginFailed to true to show an error message in UI
+                    loginFailed = true;
+                }
+         */
+    }
 }

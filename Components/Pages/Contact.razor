@@ -1,0 +1,87 @@
+﻿@page "/contact"
+<h3>Contact</h3>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .contact-header {
+            background-color: #5e35b1;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .contact-form {
+            padding: 2rem;
+        }
+
+        .contact-details {
+            background-color: #f8f9fa;
+            padding: 2rem;
+        }
+
+        .map {
+            height: 300px;
+            width: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <header class="contact-header">
+        <h1>Contact Us</h1>
+        <p>We're here to help. Feel free to reach out to us anytime!</p>
+    </header>
+
+    <div class="container my-4">
+        <div class="row">
+
+            <div class="col-md-6">
+                <h3>Send Us a Message</h3>
+                <form class="contact-form">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" placeholder="Your Full Name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="Your Email Address" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control" id="message" rows="5" placeholder="Your Message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+
+            <!-- Contact Details -->
+            <div class="col-md-6 contact-details">
+                <h3>Our Contact Information</h3>
+                <p>Feel free to visit us or contact us using the details below:</p>
+                <p><strong>Address:</strong> 1320 Albrecht Blvd, Fargo, ND, 58102</p>
+                <p><strong>Phone:</strong> +1 (555) 123-4567</p>
+                <p><strong>Email:</strong> support@pethouse.com</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center py-3 bg-light">
+        <p>&copy; 2024 PetHouse. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+
+@code {
+
+}

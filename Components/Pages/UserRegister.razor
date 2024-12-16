@@ -3,13 +3,11 @@
 @using PetHouse.Models
 @inject IDbContextFactory<PetHouse.Data.PetHouseContext> DbFactory
 @inject NavigationManager NavigationManager
-
-
 <PageTitle>Register</PageTitle>
 
 <h2>User Registration</h2>
 
-    <EditForm Model="newUser" OnValidSubmit="AddUser">
+<EditForm Model="newUser" FormName="registerForm">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -78,12 +76,12 @@
         </div>
     </fieldset>
 
-    <button type="submit" class="btn btn-primary">Register Account</button>
+    <button @onclick="AddUser" type="button" class="btn btn-primary">Register Account</button>
+
 </EditForm>
 
 @code {
 
-    [SupplyParameterFromForm]
     private User newUser { get; set; } = new();
 
     // To protect from overposting attacks, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
@@ -95,4 +93,5 @@
         NavigationManager.NavigateTo("/users");
     }
 }
+
 
