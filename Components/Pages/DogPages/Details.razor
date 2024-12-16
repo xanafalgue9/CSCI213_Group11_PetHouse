@@ -1,4 +1,5 @@
 ﻿@page "/dog"
+@rendermode InteractiveServer
 @using Microsoft.EntityFrameworkCore
 @using PetHouse.Models
 @inject IDbContextFactory<PetHouse.Data.PetHouseContext> DbFactory
@@ -66,6 +67,13 @@
                         }
                     </dd>
                 </dl>
+
+                <div>
+                    <button @onclick="@( () => Redirect($"/adopt?dogId={dog.Id}") )"
+                            class="btn btn-primary" type="button">
+                        Adopt
+                    </button>
+                </div>
             </div>
 
             <div class="col-sm-4 col-xxl-3">
@@ -88,7 +96,12 @@
     // Displays yes/no instead of true/false for bool properties
     private string EvalCondition(bool cond)
     {
-        return (cond ? "Yes" : "No");
+        return ( cond ? "Yes" : "No" );
+    }
+
+    private void Redirect(string route)
+    {
+        NavigationManager.NavigateTo(route);
     }
 
     protected override async Task OnInitializedAsync()

@@ -6,22 +6,66 @@
 @implements IAsyncDisposable
 @inject IDbContextFactory<PetHouse.Data.PetHouseContext> DbFactory
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Applications</PageTitle>
 
-<h1>Index</h1>
+<h1>Applications</h1>
 
 <p>
+    <!-- Remove probably -->
     <a href="applications/create">Create New</a>
 </p>
 
 <QuickGrid Class="table" Items="context.Application">
-    <PropertyColumn Property="application => application.DateSubmission" />
-    <PropertyColumn Property="application => application.SubmissionMessage" />
-    <PropertyColumn Property="application => application.DateEvaluation" />
-    <PropertyColumn Property="application => application.EvaluationMessage" />
-    <PropertyColumn Property="application => application.Status" />
+    <PropertyColumn Property="application => application.DateSubmission"
+                    Title="Date of Submission" Align="Align.Center" Class="col-1 py-2" />
 
-    <TemplateColumn Context="application">
+    <TemplateColumn Context="application" Title="Adopter" 
+                    Align="Align.Center" Class="col-1 py-2">
+        @if ( application.Adopter != null )
+        {
+            string name = application.Adopter.FirstName + " " +
+                          application.Adopter.LastName;
+            <span>@name</span>
+        }
+        else
+        {
+            <span>N/A</span>
+        }
+    </TemplateColumn>
+
+    <TemplateColumn Context="application" Title="Pet" 
+                    Align="Align.Center" Class="col-1 py-2">
+        @if ( application.Pet != null )
+        {
+            <span>@application.Pet.DogName</span>
+        }
+        else
+        {
+            <span>N/A</span>
+        }
+    </TemplateColumn>
+    
+    <TemplateColumn Context="application" Title="Status" 
+                    Align="Align.Center" Class="col-1 py-2">
+        @if ( application.Status == 0 )
+        {
+            <span>Submitted</span>
+        }
+        else if ( application.Status == 1 )
+        {
+            <span>Accepted</span>
+        }
+        else if ( application.Status == -1 )
+        {
+            <span>Declined</span>
+        }
+        else
+        {
+            <span>N/A</span>
+        }
+    </TemplateColumn>
+
+    <TemplateColumn Context="application" Class="col-1 py-2">
         <a href="@($"applications/edit?id={application.Id}")">Edit</a> |
         <a href="@($"applications/details?id={application.Id}")">Details</a> |
         <a href="@($"applications/delete?id={application.Id}")">Delete</a>

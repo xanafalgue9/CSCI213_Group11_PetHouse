@@ -1,4 +1,4 @@
-﻿@page "/applications/create"
+﻿@page "/adopt"
 @using Microsoft.EntityFrameworkCore
 @using PetHouse.Models
 @inject IDbContextFactory<PetHouse.Data.PetHouseContext> DbFactory
@@ -6,58 +6,78 @@
 
 <PageTitle>Create</PageTitle>
 
-<h1>Create</h1>
-
-<h2>Application</h2>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <EditForm method="post" Model="Application" OnValidSubmit="AddApplication" FormName="create" Enhance>
-            <DataAnnotationsValidator />
-            <ValidationSummary class="text-danger" role="alert"/>
-            <div class="mb-3">
-                <label for="datesubmission" class="form-label">DateSubmission:</label> 
-                <InputDate id="datesubmission" @bind-Value="Application.DateSubmission" class="form-control" /> 
-                <ValidationMessage For="() => Application.DateSubmission" class="text-danger" /> 
-            </div>        
-            <div class="mb-3">
-                <label for="submissionmessage" class="form-label">SubmissionMessage:</label> 
-                <InputText id="submissionmessage" @bind-Value="Application.SubmissionMessage" class="form-control" aria-required="true"/> 
-                <ValidationMessage For="() => Application.SubmissionMessage" class="text-danger" /> 
-            </div>        
-            <div class="mb-3">
-                <label for="dateevaluation" class="form-label">DateEvaluation:</label> 
-                <InputDate id="dateevaluation" @bind-Value="Application.DateEvaluation" class="form-control" /> 
-                <ValidationMessage For="() => Application.DateEvaluation" class="text-danger" /> 
-            </div>        
-            <div class="mb-3">
-                <label for="evaluationmessage" class="form-label">EvaluationMessage:</label> 
-                <InputText id="evaluationmessage" @bind-Value="Application.EvaluationMessage" class="form-control" /> 
-                <ValidationMessage For="() => Application.EvaluationMessage" class="text-danger" /> 
-            </div>        
-            <div class="mb-3">
-                <label for="status" class="form-label">Status:</label> 
-                <InputNumber id="status" @bind-Value="Application.Status" class="form-control" /> 
-                <ValidationMessage For="() => Application.Status" class="text-danger" /> 
-            </div>        
-            <button type="submit" class="btn btn-primary">Create</button>
-        </EditForm>
-    </div>
-</div>
-
 <div>
-    <a href="/applications">Back to List</a>
+
+    @if ( Pet is null )
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <h2>Apply to Adopt</h2>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <EditForm method="post" Model="Application" OnValidSubmit="AddApplication" FormName="create" Enhance>
+                    <DataAnnotationsValidator />
+                    <ValidationSummary class="text-danger" role="alert"/>
+
+                    <div class="mb-2">
+                        <dt>Dog:</dt>
+                        <dd>@Pet.DogName</dd>
+                    </div>  
+
+                    <div class="mb-2">
+                        <label for="submissionmessage" class="form-label">Message:</label> 
+                        <InputText id="submissionmessage" @bind-Value="Application.SubmissionMessage" class="form-control" aria-required="true"/> 
+                        <ValidationMessage For="() => Application.SubmissionMessage" class="text-danger" /> 
+                    </div>        
+
+                    <button type="submit" class="btn btn-primary">Submit application</button>
+                </EditForm>
+            </div>
+        </div>
+    }
+
 </div>
 
 @code {
     [SupplyParameterFromForm]
     private Application Application { get; set; } = new();
 
+    [SupplyParameterFromQuery(Name = "dogId")]
+    private int DogID { get; set; }
+
+    private Dog? Pet { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        Dog? doggo = await context.Dog.FirstOrDefaultAsync(d => d.Id == DogID);
+
+        if ( doggo is null )
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+        else
+        {
+            Pet = doggo;
+        }
+    }
+
     // To protect from overposting attacks, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
     private async Task AddApplication()
     {
         using var context = DbFactory.CreateDbContext();
         context.Application.Add(Application);
+
+        Application.Adopter = null;
+        Application.Pet = Pet;
+        Application.DateSubmission = DateOnly.FromDateTime(DateTime.Now);
+        Application.DateEvaluation = DateOnly.MinValue;
+        Application.EvaluationMessage = null;
+        Application.Status = 0;
+
         await context.SaveChangesAsync();
         NavigationManager.NavigateTo("/applications");
     }
