@@ -1,5 +1,6 @@
 @page "/login"
 @using Microsoft.AspNetCore.Identity
+@using PetHouse.Models
 
 <PageTitle>Log In</PageTitle>
 
@@ -24,26 +25,20 @@
 </div>
 
 @code {
-    public class LoginModel
-    {
-        
-        public string? Username { get; set; }
 
-        
-        public string? Password { get; set; }
-    }
-
-    private LoginModel loginModel = new();
-
-    
-
+    public User loginModel = new();
 
     private async Task Login()
     {
+
         var result = await SignInManager.PasswordSignInAsync(
+
             loginModel.Username,
+
             loginModel.Password,
+
             isPersistent: false,
+
             lockoutOnFailure: false);
 
         if (result.Succeeded)

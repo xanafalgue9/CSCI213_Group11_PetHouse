@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PetHouse.Data;
+using Microsoft.AspNetCore.Identity;
+using PetHouse.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContextFactory<PetHouseContext>(options =>
@@ -10,6 +12,8 @@ builder.Services.AddDbContextFactory<PetHouseContext>(options =>
 builder.Services.AddQuickGridEntityFrameworkAdapter();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+
 
 // Add services to the container.
 builder.Services.AddRazorComponents()

@@ -1,12 +1,15 @@
 ﻿@page "/register"
+@using Microsoft.EntityFrameworkCore
 @using PetHouse.Models
+@inject IDbContextFactory<PetHouse.Data.PetHouseContext> DbFactory
+@inject NavigationManager NavigationManager
 
 
 <PageTitle>Register</PageTitle>
 
 <h2>User Registration</h2>
 
-<EditForm Model="newUser" OnValidSubmit="OnFormSubmit">
+    <EditForm Model="newUser" OnValidSubmit="AddUser">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -79,61 +82,17 @@
 </EditForm>
 
 @code {
-    public class User
+
+    [SupplyParameterFromForm]
+    private User newUser { get; set; } = new();
+
+    // To protect from overposting attacks, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
+    private async Task AddUser()
     {
-
-        //user class added from User.cs (wouldn't implement)
-        public string? Username { get; set; }
-
-        /*
-         * Password requirements:
-         *     At least 8 characters
-         *     At most 30 characters
-         *     Contains a letter
-         *     Contains a number
-         *     Contains one of the following symbols:
-         *         ! @ # $ % ^ & * - _ + = : , . ?
-         */
-
-        public string? Password { get; set; }
-
-
-        public string? FirstName { get; set; }
-
-        
-        public string? LastName { get; set; }
-
-        public string? Email { get; set; }
-
-        public string? Phone { get; set; }
-
-
-        public int Age { get; set; }
-
-
-        public string? Location { get; set; }
-
-
-        public double? AnnualIncome { get; set; }
-
-
-        public int? NumPreownedPets { get; set; }
-    }
-
-    public User newUser = new User();
-
-    private async Task OnFormSubmit()
-    {
-        
-        Console.WriteLine($"User {newUser.Username} has been registered.");
-
-        // Placeholder for database save logic
-        // You can replace this with actual service calls or repository methods.
-
-        // Example: await userRepository.SaveUserAsync(newUser);
-
-        // Redirect or show a message here (adjust as needed).
-        // Example: RedirectTo("/success");
+        using var context = DbFactory.CreateDbContext();
+        context.User.Add(newUser);
+        await context.SaveChangesAsync();
+        NavigationManager.NavigateTo("/users");
     }
 }
 
