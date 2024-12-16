@@ -1,26 +1,66 @@
 @page "/login"
+@using Microsoft.AspNetCore.Identity
 
 <PageTitle>Log In</PageTitle>
 
 <h2>Log In</h2>
-    <div>
-    .
+<div>
+    <EditForm Model="loginModel" OnValidSubmit="Login">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
         <div class="mb-3">
-            <label for="UsernameLabel" class="form-label">Enter Username:</label>
-            <input type="username" class="form-control" id="UsernameLabel" placeholder="Username">
+            <label for="usernameLabel" class="form-label">Enter Username:</label>
+            <InputText id="usernameLabel" class="form-control" @bind-Value="loginModel.Username" placeholder="Username" />
         </div>
 
-<br />
+        <div class="mb-3">
+            <label for="passwordLabel" class="form-label">Enter Password:</label>
+            <InputText id="passwordLabel" class="form-control" type="password" @bind-Value="loginModel.Password" placeholder="Password" />
+        </div>
 
-        <section>
-               <p>Enter Password:</p>
-            <input type="password" ng-model="dataItem.password" 
-            class="form-control" name="password" placeholder="Password"/>
-        </section>
+        <button type="submit" class="btn btn-primary">Sign In</button>
+    </EditForm>
+</div>
 
-<br />
-<!-- IMPLEMENT SIGN-ON -->
-        <button type="button" onclick="alert('placeholder for sign-in')">Sign In</button>
+@code {
+    public class LoginModel
+    {
+        
+        public string? Username { get; set; }
+
+        
+        public string? Password { get; set; }
+    }
+
+    private LoginModel loginModel = new();
+
+    
 
 
-    </div>
+    private async Task Login()
+    {
+        var result = await SignInManager.PasswordSignInAsync(
+            loginModel.Username,
+            loginModel.Password,
+            isPersistent: false,
+            lockoutOnFailure: false);
+
+        if (result.Succeeded)
+        {
+            // Redirect to another page (e.g., dashboard)
+            NavigationManager.NavigateTo("/dashboard");
+        }
+        else
+        {
+            // Display error message to the user
+            Console.WriteLine("Login failed. Please check your credentials.");
+        }
+    }
+
+    [Inject]
+    private SignInManager<IdentityUser> SignInManager { get; set; }
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+}
