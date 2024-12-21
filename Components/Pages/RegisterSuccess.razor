@@ -1,0 +1,47 @@
+﻿@page "/register/success"
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Success</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .message-box {
+            text-align: center;
+            border: 1px solid #ddd;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        .message-box h1 {
+            color: #4CAF50;
+        }
+        .message-box p {
+            margin: 10px 0;
+            font-size: 1.1rem;
+        }
+    </style>
+    <script>
+        // Redirect to listings after 5 seconds
+        setTimeout(() => {
+            window.location.href = "/listings";
+        }, 5000);
+    </script>
+</head>
+<body>
+    <div class="message-box">
+        <h1>Congrats!</h1>
+        <p>You have been registered. Redirecting you to listings now.</p>
+    </div>
+</body>
+</html>

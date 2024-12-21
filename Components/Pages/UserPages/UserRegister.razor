@@ -1,4 +1,4 @@
-﻿@page "/register"
+﻿@page "/users/create"
 @using Microsoft.EntityFrameworkCore
 @using PetHouse.Models
 @inject IDbContextFactory<PetHouse.Data.PetHouseContext> DbFactory
@@ -111,7 +111,8 @@
         using var context = DbFactory.CreateDbContext();
         context.User.Add(User);
         await context.SaveChangesAsync();
-        NavigationManager.NavigateTo("/listings");
+        NavigationManager.NavigateTo("/register/success");
     }
 }
+
 
