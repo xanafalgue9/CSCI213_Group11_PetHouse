@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PetHouse.Data;
 using Microsoft.AspNetCore.Identity;
 using PetHouse.Models;
+using Microsoft.AspNetCore.Components.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContextFactory<PetHouseContext>(options =>
@@ -12,7 +13,14 @@ builder.Services.AddDbContextFactory<PetHouseContext>(options =>
 builder.Services.AddQuickGridEntityFrameworkAdapter();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
+builder.Services.AddAuthenticationCore();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+builder.Services.AddAuthorizationCore();
+builder.Services.AddAuthorizationCore(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("UserOnly", policy => policy.RequireRole("User"));
+});
 
 
 // Add services to the container.
